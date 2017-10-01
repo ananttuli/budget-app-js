@@ -79,7 +79,7 @@ var UIController = (function(){
     return{
         getInput:function(){
             var addedDesc = document.querySelector(DOMStrings.addedDesc).value;
-            var addedValue = document.querySelector(DOMStrings.addedValue).value;
+            var addedValue = parseFloat(document.querySelector(DOMStrings.addedValue).value);
             var addedType = document.querySelector(DOMStrings.addedType).value;
             return {description:addedDesc, value:addedValue, type:addedType};
         },
@@ -88,19 +88,34 @@ var UIController = (function(){
         },
         addListItem: function(item, type){
             var html, el;
-            //if(item.value != null && item.description != null){
-                if(type == 'exp'){
-                    el = DOMStrings.expensesContainer;
-                    html = expenseStringBuilder(item);
-                }else if(type == 'inc'){
-                    el = DOMStrings.incomesContainer;
-                    html = incomeStringBuilder(item); 
-                }
-
-                document.querySelector(el).insertAdjacentHTML('beforeend', html);
+        
+            if(type == 'exp'){
+                el = DOMStrings.expensesContainer;
+                html = expenseStringBuilder(item);
+            }else if(type == 'inc'){
+                el = DOMStrings.incomesContainer;
+                html = incomeStringBuilder(item); 
             }
 
-        //}
+            document.querySelector(el).insertAdjacentHTML('beforeend', html);
+    
+        
+        },
+        clearFields: function(){
+            var fieldsArr;
+            var fields = document.querySelectorAll(DOMStrings.addedDesc + ',' + DOMStrings.addedValue);
+            console.log('fields list :');
+            console.log(fields);
+            console.log('fields array:');
+            fieldsArr = Array.prototype.slice.call(fields);
+            console.log(fieldsArr);
+            fieldsArr.forEach(function(current, i, array){
+                current.value = "";
+            });
+            fieldsArr[0].focus();
+        }
+
+        
 
 
     }
@@ -124,21 +139,30 @@ var controller = (function(budgetCtrl, UICtrl){
         
     };
     
+    var updateBudget = function(){
+        //1. Calculate budget
+        //2. return budget
+        //3. Display budget on UI
+    }
+
     var ctrlAddItem = function(){
         var input, newItem;
         //TODO
         //1. Get field input value
         //2. Add item to budget controller
         //3. Add item to UI
-        //4. Calculate the budget
-        //5. Display budget on UI
 
        input = UICtrl.getInput();
-       newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+       if(!isNaN(input.value) && input.value != "" && (input.value > 0) && input.description !== ""){
+        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-       UICtrl.addListItem(newItem, input.type);
-
-       console.log(input);
+        UICtrl.addListItem(newItem, input.type);
+            //clear the fields
+            UICtrl.clearFields();
+        
+            // Calculate and update budget
+            updateBudget();
+       }
     };
 
     return{
