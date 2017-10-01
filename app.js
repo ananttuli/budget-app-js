@@ -1,33 +1,63 @@
+/**
+ * Budget Controller - Model
+ */
 var budgetController = (function(){
-    var x = 23;
 
-    var add = function(a){
-        return x+a;
-    }
-
-    return{
-        publicTest: function(b){
-           return (add(b));
-        }
-    }
 
 })();
 
-
+/**
+ * UI Handler
+ */
 var UIController = (function(){
+    var DOMStrings = {
+        addedDesc:'.add__description',
+        addedValue:'.add__value',
+        addedType:'.add__type',
+        addBtn:'.add__btn'
+        
+    }
+   
+    
+    return{
+        getInput:function(){
+            var addedDesc = document.querySelector(DOMStrings.addedDesc).value;
+            var addedValue = document.querySelector(DOMStrings.addedValue).value;
+            var addedType = document.querySelector(DOMStrings.addedType).value;
+            return {description:addedDesc, value:addedValue, type:addedType};
+        },
+        getDOMStrings: function(){
+            return DOMStrings;
+        }
 
-    //add code later
+
+    }
 
 })();
 
-
+/**
+ * App Controller
+ */
 var controller = (function(budgetCtrl, UICtrl){
+    var UIDom = UICtrl.getDOMStrings();
+    var ctrlAddItem = function(){
+        //TODO
+        //1. Get field input value
+        //2. Add item to budget controller
+        //3. Add item to UI
+        //4. Calculate the budget
+        //5. Display budget on UI
 
-    var z = budgetCtrl.publicTest(100);
-
-    return{
-        anotherPublic: function(){
-            console.log(z);
-        }
+       var input = UICtrl.getInput();
+       console.log(input);
     }
+
+    document.querySelector(UIDom.addBtn).addEventListener('click', ctrlAddItem);
+
+    document.addEventListener('keypress', function(e){
+        if(e.keyCode == 13 || e.which == 13){
+            ctrlAddItem();
+        }
+    });
+
 })(budgetController, UIController);
