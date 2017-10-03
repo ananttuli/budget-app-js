@@ -162,6 +162,22 @@ var UIController = (function(){
         getDOMStrings: function(){
             return DOMStrings;
         },
+        formatNumber: function(num, type){
+            var finalNumber, splitNum;
+            finalNumber = Math.abs(num);
+            finalNumber = finalNumber.toFixed(2);
+            splitNum = finalNumber.split('.');
+            // integer part splitNum[0], decimal part splitNum[1]
+            if(splitNum[0].length > 3){
+                splitNum[0] = splitNum[0].substr(0, 1) + ',' + splitNum[0].substr(1, 3);
+            }
+            if(type == 'inc'){
+
+            }else if(type == 'exp'){
+
+            }
+        }
+        ,
         addListItem: function(item, type){
             var html, el;
         
